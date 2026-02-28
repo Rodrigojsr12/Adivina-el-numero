@@ -24,7 +24,7 @@ def procesar_intento():
         label_feedback.configure(text="¡Eso no es un número! Concéntrate.", text_color="#f1c40f")
         return
 
-    if vidas <= 0 or intento == numero_secreto:
+    if vidas <= 0:
         return
 
     # 2. Registrar el intento
