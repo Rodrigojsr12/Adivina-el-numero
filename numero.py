@@ -8,7 +8,7 @@ ctk.set_default_color_theme("blue")
 # --- Estado del Juego  ---
 numero_secreto = random.randint(1, 100)
 vidas = 5
-historial_intentos = []
+historial_intentos: list[int] = []
 
 # --- Lógica del Juego ---
 def procesar_intento():
@@ -31,7 +31,8 @@ def procesar_intento():
     if intento not in historial_intentos:
         historial_intentos.append(intento)
         # Mostrar los últimos 5 intentos para no saturar la pantalla
-        texto_historial = " - ".join(map(str, historial_intentos[-5:]))
+        ultimos: list[int] = historial_intentos[-5:]
+        texto_historial = " - ".join(map(str, ultimos))
         label_historial.configure(text=f"Intentos anteriores: {texto_historial}")
 
     # 3. Lógica principal de "Caliente o Frío"
@@ -46,7 +47,7 @@ def procesar_intento():
     else:
         # Restar una vida y actualizar corazones
         vidas -= 1
-        actualizar_corazones()
+        actualizar_corazones(vidas)
         
         if vidas == 0:
             label_feedback.configure(text=f"¡GAME OVER! Te quedaste sin vidas.\nEl número era {numero_secreto}.", text_color="#e74c3c")
@@ -58,23 +59,23 @@ def procesar_intento():
         # Dar pistas según la distancia
         if distancia <= 5:
             mensaje = f"¡{intento} está HIRVIENDO! ¡Casi me quemas!"
-            color = "#ff4757" # Rojo fuego
+            color = "#ff4757" 
         elif distancia <= 15:
             mensaje = f"{intento} está Caliente. Vas por buen camino."
-            color = "#ffa502" # Naranja
+            color = "#ffa502" 
         elif distancia <= 30:
             mensaje = f"{intento} está Tibio... Ni fu ni fa."
-            color = "#eccc68" # Amarillo
+            color = "#eccc68" 
         else:
             mensaje = f"¡Uff! {intento} está en el Polo Norte. ¡Frío, frío!"
-            color = "#70a1ff" # Azul hielo
+            color = "#70a1ff" 
             
         label_feedback.configure(text=mensaje, text_color=color)
         
     # Limpiar la caja de texto para el siguiente intento
     entrada_numero.delete(0, 'end')
 
-def actualizar_corazones():
+def actualizar_corazones(vidas):
     texto_vidas = "❤ " * vidas + "🤍 " * (5 - vidas)
     label_vidas.configure(text=texto_vidas)
 
@@ -86,7 +87,7 @@ def reiniciar_juego():
     historial_intentos.clear()
     
     # Restablecer Interfaz
-    actualizar_corazones()
+    actualizar_corazones(vidas)
     label_feedback.configure(text="Estoy pensando en un número del 1 al 100...\n¡Atrévete a adivinarlo!", text_color="white")
     label_historial.configure(text="Intentos anteriores: Ninguno")
     
